@@ -1,4 +1,6 @@
+'use strict';
+require('bootstrap/less/bootstrap.less');
 import React from 'react/addons';
-import ReactFluxTodo from 'components/ReactFluxTodo';
+import TodoList from 'components/TodoList';
 
-React.render(<ReactFluxTodo />, document.getElementById('content'));
+React.render(<TodoList />, document.getElementById('todo-list'));
