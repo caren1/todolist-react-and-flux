@@ -2,6 +2,7 @@ import React from 'react/addons'
 import { Container, Row, ListGroup } from 'react-bootstrap'
 import TodoListStore from '../stores/TodoList'
 import TodoListTask from '../components/TodoListTask'
+import AddNewTaskForm from '../components/AddNewTaskForm'
 
 class TodoList extends React.Component {
     constructor(props){
@@ -37,6 +38,8 @@ class TodoList extends React.Component {
                         {tasks.map(task => {
                             <TodoListTask key={task.get('id')} task={task}/>}).toJS()}
                     </ListGroup>
+                    <h2>Add new task:</h2>
+                    <AddNewTaskForm />
                 </Row>
             </Container>
         )
