@@ -1,34 +1,39 @@
 /*
- * Webpack development server configuration
+ * Webpack distribution configuration
  *
- * This file is set up for serving the webpack-dev-server, which will watch for changes and recompile as required if
- * the subfolder /webpack-dev-server/ is visited. Visiting the root will not automatically reload.
+ * This file is set up for serving the distribution version. It will be compiled to dist/ by default
  */
+
 'use strict';
+
 var webpack = require('webpack');
 
 module.exports = {
 
   output: {
-    filename: 'main.js',
-    publicPath: '/assets/'
+    publicPath: '/assets/',
+    path: 'dist/assets/',
+    filename: 'main.js'
   },
 
-  cache: true,
-  debug: true,
+  debug: false,
   devtool: false,
-  entry: [
-      'webpack/hot/only-dev-server',
-      './src/TodoList.js'
-  ],
+  entry: './src/TodoList.js',
 
   stats: {
     colors: true,
-    reasons: true
+    reasons: false
   },
 
+  plugins: [
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.UglifyJsPlugin(),
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.AggressiveMergingPlugin()
+  ],
+
   resolve: {
-    extensions: ['', '.js', '.jsx'],
+    extensions: ['', '.js'],
     alias: {
       'styles': __dirname + '/src/styles',
       'mixins': __dirname + '/src/mixins',
@@ -38,31 +43,27 @@ module.exports = {
       'lib': __dirname + '/src/lib'
     }
   },
+
   module: {
     preLoaders: [{
-      test: /\.(js|jsx)$/,
+      test: /\.js$/,
       exclude: /node_modules/,
       loader: 'jsxhint'
     }],
+
     loaders: [{
-      test: /\.(js|jsx)$/,
+      test: /\.js$/,
       exclude: /node_modules/,
-      loader: 'react-hot!babel-loader'
-    }, {
-      test: /\.less/,
-      loader: 'style-loader!css-loader!less-loader'
+      loader: 'babel-loader'
     }, {
       test: /\.css$/,
       loader: 'style-loader!css-loader'
     }, {
+      test: /\.less/,
+      loader: 'style-loader!css-loader!less-loader'
+    }, {
       test: /\.(png|jpg|eot|ttf|svg|woff|woff2)$/,
       loader: 'url-loader?limit=8192'
     }]
-  },
-
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
-  ]
-
+  }
 };
