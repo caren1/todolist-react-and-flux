@@ -15,4 +15,15 @@ class TodoListStore {
 
     this.state = List()
    }
+
+   add(task) {
+       return this.setState(this.state.push(task));
+   }
+
+   remove(taskID) {
+       let taskIndex = this.state.findIndex((task) => task.get('id') === taskID)
+       return taskIndex !== (-1) ? this.setState(this.state.delete(taskIndex)) : this.state
+   }
 }
+
+export default AltInstance.createStore(ImmutableStore(TodoListStore))
